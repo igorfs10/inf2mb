@@ -37,11 +37,11 @@ public class FrmAgenda extends JFrame {
 		painelPrincipal.add(painelTitulo);
 		painelTitulo.setLayout(null);
 		
-		JLabel lblAgenda = new JLabel("Agenda");
-		lblAgenda.setIcon(new ImageIcon(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/agenda32.png")));
-		lblAgenda.setFont(new Font("Arial", Font.BOLD, 28));
-		lblAgenda.setBounds(10, 11, 414, 44);
-		painelTitulo.add(lblAgenda);
+		JLabel lblTituloTela = new JLabel("Agenda");
+		lblTituloTela.setIcon(new ImageIcon(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/agenda32.png")));
+		lblTituloTela.setFont(new Font("Arial", Font.BOLD, 28));
+		lblTituloTela.setBounds(10, 11, 414, 44);
+		painelTitulo.add(lblTituloTela);
 		
 		painelTabela = new JPanel();
 		painelTabela.setBorder(new TitledBorder(null, "Meus Contatos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 0, 204)));
