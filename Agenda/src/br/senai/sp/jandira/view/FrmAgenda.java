@@ -19,6 +19,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FrmAgenda extends JFrame {
 
@@ -62,18 +64,42 @@ public class FrmAgenda extends JFrame {
 		painelBotoes.setLayout(null);
 		
 		JButton btnNovo = new JButton("");
+		
+		btnNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FrmContato contato = new FrmContato("NOVO");
+				contato.setVisible(true);
+			}
+		});
+		
 		btnNovo.setToolTipText("Adicionar contato");
 		btnNovo.setIcon(new ImageIcon(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/novo32.png")));
 		btnNovo.setBounds(10, 11, 44, 44);
 		painelBotoes.add(btnNovo);
 		
 		JButton btnEditar = new JButton("");
+		
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FrmContato contato = new FrmContato("EDITAR");
+				contato.setVisible(true);
+			}
+		});
+		
 		btnEditar.setToolTipText("Editar contato");
 		btnEditar.setIcon(new ImageIcon(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/editar32.png")));
 		btnEditar.setBounds(64, 11, 44, 44);
 		painelBotoes.add(btnEditar);
 		
 		JButton btnExcluir = new JButton("");
+		
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FrmContato contato = new FrmContato("EXCLUIR");
+				contato.setVisible(true);
+			}
+		});
+		
 		btnExcluir.setToolTipText("Excluir contato");
 		btnExcluir.setIcon(new ImageIcon(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/excluir32.png")));
 		btnExcluir.setBounds(118, 11, 44, 44);
@@ -130,5 +156,6 @@ public class FrmAgenda extends JFrame {
 		scrollTabela = new JScrollPane();
 		scrollTabela.setBounds(10, 24, 394, 145);
 		painelTabela.add(scrollTabela);
+		
 	}
 }
