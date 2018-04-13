@@ -50,6 +50,7 @@ public class FrmContato extends JFrame {
 		painelTitulo.add(lblTitulo);
 		
 		JLabel lblAcao = new JLabel(operacao);
+		lblAcao.setForeground(Color.BLUE);
 		lblAcao.setFont(new Font("Arial", Font.PLAIN, 20));
 		lblAcao.setBounds(196, 24, 93, 24);
 		painelTitulo.add(lblAcao);
@@ -132,7 +133,7 @@ public class FrmContato extends JFrame {
 		painelBotoes.setLayout(null);
 		
 		JButton btnSalvar = new JButton("");
-		btnSalvar.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/editar32.png")));
+		btnSalvar.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/salvar32.png")));
 		btnSalvar.setToolTipText("Salvar");
 		btnSalvar.setBounds(10, 11, 46, 44);
 		painelBotoes.add(btnSalvar);

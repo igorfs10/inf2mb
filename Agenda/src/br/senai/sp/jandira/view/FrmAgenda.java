@@ -1,8 +1,5 @@
 package br.senai.sp.jandira.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,8 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.UIManager;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
@@ -26,8 +21,8 @@ public class FrmAgenda extends JFrame {
 
 	private JPanel painelPrincipal;
 	private JTable tabelaContatos;
-	JScrollPane scrollTabela;
-	JPanel painelTabela;
+	private JScrollPane scrollTabela;
+	private JPanel painelTabela;
 
 	public FrmAgenda() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/agenda32.png")));
@@ -112,50 +107,26 @@ public class FrmAgenda extends JFrame {
 		painelBotoes.add(btnSair);
 		
 		criarTabela();
+	
+	}
+	
+	public void criarTabela(){
+		scrollTabela = new JScrollPane();
+		scrollTabela.setBounds(10, 32, 394, 154);
+		painelTabela.add(scrollTabela);
 		
-		/*
 		tabelaContatos = new JTable();
 		tabelaContatos.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
 			},
 			new String[] {
-				"ID", "NOME", "E-MAIL"
+				"ID", "Nome", "Email"
 			}
 		));
-		tabelaContatos.getColumnModel().getColumn(0).setPreferredWidth(45);
-		tabelaContatos.getColumnModel().getColumn(1).setPreferredWidth(261);
-		tabelaContatos.getColumnModel().getColumn(2).setPreferredWidth(308);
+		tabelaContatos.getColumnModel().getColumn(0).setPreferredWidth(31);
+		tabelaContatos.getColumnModel().getColumn(1).setPreferredWidth(143);
+		tabelaContatos.getColumnModel().getColumn(2).setPreferredWidth(151);
 		scrollTabela.setViewportView(tabelaContatos);
-		
-		*/
-	}
-	
-	public void criarTabela(){
-		DefaultTableModel modeloTabela = new DefaultTableModel();
-		Object[] linhas = new Object[3];
-		
-		int i = 0;
-		while(i < 5){
-			linhas [0] = "1";
-			linhas [1] = "Maria";
-			linhas [2] = "maria@teste.com.br";
-			modeloTabela.addRow(linhas);
-			i++;
-		}
-		String[] titulo = {"ID", "NOME", "E-MAIL"};
-		modeloTabela.setColumnIdentifiers(titulo);
-		
-		tabelaContatos.setModel(modeloTabela);
-		scrollTabela.setViewportView(tabelaContatos);
-		
-		scrollTabela = new JScrollPane();
-		scrollTabela.setBounds(10, 24, 394, 145);
-		painelTabela.add(scrollTabela);
-		
 	}
 }
