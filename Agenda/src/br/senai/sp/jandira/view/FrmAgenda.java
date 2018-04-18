@@ -11,10 +11,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import br.senai.sp.jandira.dao.ContatoDAO;
+import br.senai.sp.jandira.model.Contato;
+
 import javax.swing.UIManager;
 import javax.swing.JButton;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class FrmAgenda extends JFrame {
@@ -29,7 +34,7 @@ public class FrmAgenda extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/agenda32.png")));
 		setTitle("Agenda de contatos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 390);
+		setBounds(100, 100, 438, 390);
 		painelPrincipal = new JPanel();
 		painelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(painelPrincipal);
@@ -117,14 +122,36 @@ public class FrmAgenda extends JFrame {
 		painelTabela.add(scrollTabela);
 		
 		tabelaContatos = new JTable();
-		tabelaContatos.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-			},
-			new String[] {
-				"ID", "Nome", "Email"
-			}
-		));
+		
+		DefaultTableModel modeloTabela = new DefaultTableModel();
+		String[] nomesColunas = {"ID", "NOME", "E-MAIL"};
+		modeloTabela.setColumnIdentifiers(nomesColunas);
+		
+		ContatoDAO contatoDAO = new ContatoDAO();
+		ArrayList<Contato> contatos = new ArrayList<>();
+		
+		contatos = contatoDAO.getContatos();
+		
+		Object[] linha = new Object[3];
+		for(Contato contato : contatos){
+			linha[0] = contato.getId();
+			linha[1] = contato.getNome();
+			linha[2] = contato.getEmail();
+			modeloTabela.addRow(linha);
+		}
+		
+		tabelaContatos.setModel(modeloTabela);
+		
+//		tabelaContatos.setModel(new DefaultTableModel(
+//			new Object[][] {
+//				{null, null, null},
+//				{null, null, null},
+//			},
+//			new String[] {
+//				"ID", "Nome", "Email"
+//			}
+//		));
+		
 		tabelaContatos.getColumnModel().getColumn(0).setPreferredWidth(31);
 		tabelaContatos.getColumnModel().getColumn(1).setPreferredWidth(143);
 		tabelaContatos.getColumnModel().getColumn(2).setPreferredWidth(151);
