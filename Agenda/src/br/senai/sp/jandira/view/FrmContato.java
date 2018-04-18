@@ -1,8 +1,5 @@
 package br.senai.sp.jandira.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -34,9 +31,11 @@ public class FrmContato extends JFrame {
 	private JTextField txtTelefone;
 	private JTextField txtCelular;
 	private JTextField txtDataDeNascimento;
+	private JTextArea txtEndereco;
 	private final JScrollPane scrollPane = new JScrollPane();
 
 	public FrmContato(String operacao) {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/editar32.png")));
 		setTitle("Dados do Contato");
 		setBounds(100, 100, 390, 478);
@@ -57,11 +56,11 @@ public class FrmContato extends JFrame {
 		lblTitulo.setBounds(10, 11, 176, 44);
 		painelTitulo.add(lblTitulo);
 		
-		JLabel lblAcao = new JLabel(operacao);
-		lblAcao.setForeground(Color.BLUE);
-		lblAcao.setFont(new Font("Arial", Font.PLAIN, 20));
-		lblAcao.setBounds(271, 24, 93, 24);
-		painelTitulo.add(lblAcao);
+		JLabel lblOperacao = new JLabel(operacao);
+		lblOperacao.setForeground(Color.BLUE);
+		lblOperacao.setFont(new Font("Arial", Font.PLAIN, 20));
+		lblOperacao.setBounds(271, 24, 93, 24);
+		painelTitulo.add(lblOperacao);
 		
 		JPanel painelConteudo = new JPanel();
 		painelConteudo.setBorder(new TitledBorder(null, "Dados:", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLUE));
@@ -130,7 +129,7 @@ public class FrmContato extends JFrame {
 		scrollPane.setBounds(129, 231, 215, 45);
 		painelConteudo.add(scrollPane);
 		
-		JTextArea txtEndereco = new JTextArea();
+		txtEndereco = new JTextArea();
 		scrollPane.setViewportView(txtEndereco);
 		txtEndereco.setLineWrap(true);
 		txtEndereco.setWrapStyleWord(true);
@@ -158,16 +157,16 @@ public class FrmContato extends JFrame {
 				contato.setSexo(cbbSexo.getSelectedItem().toString());
 				contato.setTelefone(txtTelefone.getText());
 				contato.setCelular(txtCelular.getText());
-				contato.setNome(txtNome.getText());
 				contato.setDtNasc(txtDataDeNascimento.getText());
 				contato.setEndereco(txtEndereco.getText());
 				
 				ContatoDAO contatoDao = new ContatoDAO();
 				contatoDao.setContato(contato);
 				
-				if(lblAcao.getText().equals("novo")){
+				if(lblOperacao.getText().equals("NOVO")){
 					contatoDao.gravar();
 				}
+				limparControles();
 			}
 		});
 		btnSalvar.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/salvar32.png")));
@@ -180,5 +179,16 @@ public class FrmContato extends JFrame {
 		btnSair.setToolTipText("Sair");
 		btnSair.setBounds(300, 11, 44, 44);
 		painelBotoes.add(btnSair);
+	}
+	
+	private void limparControles(){
+		txtNome.setText("");
+		txtEmail.setText("");
+		txtTelefone.setText("");
+		txtCelular.setText("");
+		txtDataDeNascimento.setText("");
+		txtEndereco.setText("");
+		txtNome.requestFocus();
+		
 	}
 }

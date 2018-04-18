@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import br.senai.sp.jandira.dbUtils.Conexao;
 import br.senai.sp.jandira.model.Contato;
 
@@ -13,7 +15,7 @@ public class ContatoDAO {
 	
 	
 	public void gravar(){
-		String sql = "Insert INTO contatos "
+		String sql = "INSERT INTO contatos "
 				+ "(nome, dtNasc, email, endereco, telefone, celular, sexo) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		
@@ -29,6 +31,10 @@ public class ContatoDAO {
 		stm.setString(6, contato.getCelular());
 		stm.setString(7, contato.getSexo());
 		stm.execute();
+		
+		JOptionPane.showMessageDialog(null, "Contato gravado com sucesso",
+				"Gravação",
+				JOptionPane.INFORMATION_MESSAGE);
 		
 	} catch (SQLException e) {
 		System.out.println(e.getMessage());

@@ -25,6 +25,7 @@ public class FrmAgenda extends JFrame {
 	private JPanel painelTabela;
 
 	public FrmAgenda() {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/agenda32.png")));
 		setTitle("Agenda de contatos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
