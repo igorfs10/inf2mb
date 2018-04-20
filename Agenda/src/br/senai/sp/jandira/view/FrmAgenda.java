@@ -82,8 +82,21 @@ public class FrmAgenda extends JFrame {
 		
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				int linha;
+				
+				linha = tabelaContatos.getSelectedRow();
+				
+				int id;
+				
+				id = (int) tabelaContatos.getValueAt(linha, 0);
+				
+				ContatoDAO contatoDao = new ContatoDAO();
+				
+				System.out.println(contatoDao.getContato(id).getNome());
+				
 				FrmContato contato = new FrmContato("EDITAR");
-				contato.setVisible(true);
+				//contato.setVisible(true);
 			}
 		});
 		
@@ -117,21 +130,26 @@ public class FrmAgenda extends JFrame {
 	}
 	
 	public void criarTabela(){
+		
+		// Cria e adiciona um scroll no painel da table
 		scrollTabela = new JScrollPane();
 		scrollTabela.setBounds(10, 32, 394, 154);
 		painelTabela.add(scrollTabela);
 		
 		tabelaContatos = new JTable();
 		
+		// Define o modelo da tabela
 		DefaultTableModel modeloTabela = new DefaultTableModel();
 		String[] nomesColunas = {"ID", "NOME", "E-MAIL"};
 		modeloTabela.setColumnIdentifiers(nomesColunas);
 		
+		// Recupera os dados e poe na array para mostrar na tabela
 		ContatoDAO contatoDAO = new ContatoDAO();
 		ArrayList<Contato> contatos = new ArrayList<>();
 		
 		contatos = contatoDAO.getContatos();
 		
+		// Cria cada linha que ira compor a tabela
 		Object[] linha = new Object[3];
 		for(Contato contato : contatos){
 			linha[0] = contato.getId();
@@ -141,16 +159,6 @@ public class FrmAgenda extends JFrame {
 		}
 		
 		tabelaContatos.setModel(modeloTabela);
-		
-//		tabelaContatos.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{null, null, null},
-//				{null, null, null},
-//			},
-//			new String[] {
-//				"ID", "Nome", "Email"
-//			}
-//		));
 		
 		tabelaContatos.getColumnModel().getColumn(0).setPreferredWidth(31);
 		tabelaContatos.getColumnModel().getColumn(1).setPreferredWidth(143);
