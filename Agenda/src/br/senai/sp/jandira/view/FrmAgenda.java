@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
@@ -19,7 +21,9 @@ import javax.swing.UIManager;
 import javax.swing.JButton;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 
 public class FrmAgenda extends JFrame {
@@ -52,6 +56,15 @@ public class FrmAgenda extends JFrame {
 		lblTituloTela.setBounds(10, 11, 414, 44);
 		painelTitulo.add(lblTituloTela);
 		
+		JLabel lblData = new JLabel("New label");
+		lblData.setBounds(338, 11, 86, 28);
+		
+		Date dataAtual = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		lblData.setText(df.format(dataAtual));
+		
+		painelTitulo.add(lblData);
+		
 		painelTabela = new JPanel();
 		painelTabela.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Meus Contatos:", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 0, 204)));
 		painelTabela.setBounds(10, 64, 414, 197);
@@ -83,20 +96,34 @@ public class FrmAgenda extends JFrame {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				int linha;
-				
-				linha = tabelaContatos.getSelectedRow();
-				
-				int id;
-				
-				id = (int) tabelaContatos.getValueAt(linha, 0);
-				
-				ContatoDAO contatoDao = new ContatoDAO();
-				
-				System.out.println(contatoDao.getContato(id).getNome());
-				
-				FrmContato contato = new FrmContato("EDITAR");
-				//contato.setVisible(true);
+				try {
+					int linha;
+					
+					linha = tabelaContatos.getSelectedRow();
+					
+					int id;
+					
+					id = (int) tabelaContatos.getValueAt(linha, 0);
+					
+					ContatoDAO contatoDao = new ContatoDAO();
+					Contato contato = contatoDao.getContato(id);
+									
+					FrmContato frmContato = new FrmContato("EDITAR");
+					frmContato.setTxtId(String.valueOf(contato.getId()));
+					frmContato.setTxtNome(contato.getNome());
+					frmContato.setTxtEmail(contato.getEmail());
+					frmContato.setTxtTelefone(contato.getTelefone());
+					frmContato.setTxtCelular(contato.getCelular());
+					frmContato.setTxtDtNasc(contato.getDtNasc());
+					frmContato.setTxtEndereco(contato.getEndereco());
+					frmContato.setCbSexo(contato.getSexo());
+					
+					frmContato.setVisible(true);
+					
+				} catch (Exception erro){
+					JOptionPane.showMessageDialog(null, "Por favor selecione um contato!", 
+							"Atenção", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		

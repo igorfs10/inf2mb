@@ -3,6 +3,7 @@ package br.senai.sp.jandira.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -17,44 +18,90 @@ public class ContatoDAO {
 	private ResultSet rs;
 	
 	
-	public void gravar(){
+	public void gravar () {
+		
 		String sql = "INSERT INTO contatos "
 				+ "(nome, dtNasc, email, endereco, telefone, celular, sexo) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		
-	stm = null;
-	
-	try {
-		stm = Conexao.abrirConexao().prepareStatement(sql);
-		stm.setString(1, contato.getNome());
-		stm.setString(2, contato.getDtNasc());
-		stm.setString(3, contato.getEmail());
-		stm.setString(4, contato.getEndereco());
-		stm.setString(5, contato.getTelefone());
-		stm.setString(6, contato.getCelular());
-		stm.setString(7, contato.getSexo());
-		stm.execute();
+		stm = null;
 		
-		JOptionPane.showMessageDialog(null, "Contato gravado com sucesso",
-				"Gravação",
-				JOptionPane.INFORMATION_MESSAGE);
-		
-	} catch (SQLException e) {
-		System.out.println(e.getMessage());
-	}
+		try {
+			stm = Conexao.abrirConexao().prepareStatement(sql);
+			stm.setString(1, contato.getNome());
+			stm.setString(2, contato.getDtNasc());
+			stm.setString(3, contato.getEmail());
+			stm.setString(4, contato.getEndereco());
+			stm.setString(5, contato.getTelefone());
+			stm.setString(6, contato.getCelular());
+			stm.setString(7, contato.getSexo());
+			stm.execute();
+			
+			JOptionPane.showMessageDialog(null, "Contato gravado com sucesso",
+					"Gravação",
+					JOptionPane.INFORMATION_MESSAGE);
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 
-	
 	}
 	
-	public void atualizar(){
+	public void atualizar(String id){
+
+		String sql = "UPDATE contatos set"
+				+ " nome = ?, dtnasc = ?, email = ?, endereco = ?, telefone = ?, celular = ?, sexo = ?"
+				+ " WHERE id = ?";
 		
+		stm = null;
+		
+		try {
+			stm = Conexao.abrirConexao().prepareStatement(sql);
+			stm.setString(1, contato.getNome());
+			stm.setString(2, contato.getDtNasc());
+			stm.setString(3, contato.getEmail());
+			stm.setString(4, contato.getEndereco());
+			stm.setString(5, contato.getTelefone());
+			stm.setString(6, contato.getCelular());
+			stm.setString(7, contato.getSexo());
+			stm.setString(8, id);
+			stm.execute();
+			
+			JOptionPane.showMessageDialog(null, "Contato atualizado com sucesso",
+					"Gravação",
+					JOptionPane.INFORMATION_MESSAGE);
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 	
-	public void excluir(){
+	public void excluir(int id){
 		
+		String sql = "DELETE FROM contatos"
+				+ " WHERE id = ?";
+		
+		stm = null;
+		
+		try {
+			stm = Conexao.abrirConexao().prepareStatement(sql);
+			stm.setString(1, String.valueOf(id));
+			stm.execute();
+			
+			JOptionPane.showMessageDialog(null, "Contato gravado com sucesso",
+					"Gravação",
+					JOptionPane.INFORMATION_MESSAGE);
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 	
 	public Contato getContato(int id){
+		
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
 		contato = new Contato();
 		
@@ -71,7 +118,7 @@ public class ContatoDAO {
 			contato.setEmail(rs.getString("email"));
 			contato.setTelefone(rs.getString("telefone"));
 			contato.setCelular(rs.getString("celular"));
-			contato.setDtNasc(rs.getString("dtNasc"));
+			contato.setDtNasc(df.format(rs.getDate("dtNasc")));
 			contato.setSexo(rs.getString("sexo"));
 			contato.setEndereco(rs.getString("endereco"));
 			

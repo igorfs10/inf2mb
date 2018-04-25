@@ -30,9 +30,42 @@ public class FrmContato extends JFrame {
 	private JTextField txtEmail;
 	private JTextField txtTelefone;
 	private JTextField txtCelular;
-	private JTextField txtDataDeNascimento;
+	private JTextField txtDtNasc;
 	private JTextArea txtEndereco;
-	private final JScrollPane scrollPane = new JScrollPane();
+	private JComboBox<?> cbSexo;
+	private JScrollPane scrollPane = new JScrollPane();
+	
+	public void setTxtId(String txtId){
+		this.txtId.setText(txtId);
+	}
+	
+	public void setTxtNome(String txtNome){
+		this.txtNome.setText(txtNome);
+	}
+	
+	public void setTxtEmail(String txtEmail){
+		this.txtEmail.setText(txtEmail);
+	}
+	
+	public void setTxtTelefone(String txtTelefone){
+		this.txtTelefone.setText(txtTelefone);
+	}
+	
+	public void setTxtCelular(String txtCelular){
+		this.txtCelular.setText(txtCelular);
+	}
+	
+	public void setTxtDtNasc(String txtDtNasc){
+		this.txtDtNasc.setText(txtDtNasc);
+	}
+	
+	public void setTxtEndereco(String txtEndereco){
+		this.txtEndereco.setText(txtEndereco);
+	}
+	
+	public void setCbSexo(String cbSexo){
+		this.cbSexo.setSelectedItem(cbSexo);
+	}
 
 	public FrmContato(String operacao) {
 		setResizable(false);
@@ -122,10 +155,10 @@ public class FrmContato extends JFrame {
 		lblDataDeNascimento.setBounds(10, 212, 115, 14);
 		painelConteudo.add(lblDataDeNascimento);
 		
-		txtDataDeNascimento = new JTextField();
-		txtDataDeNascimento.setBounds(129, 206, 215, 20);
-		painelConteudo.add(txtDataDeNascimento);
-		txtDataDeNascimento.setColumns(10);
+		txtDtNasc = new JTextField();
+		txtDtNasc.setBounds(129, 206, 215, 20);
+		painelConteudo.add(txtDtNasc);
+		txtDtNasc.setColumns(10);
 		scrollPane.setBounds(129, 231, 215, 45);
 		painelConteudo.add(scrollPane);
 		
@@ -138,10 +171,10 @@ public class FrmContato extends JFrame {
 		lblSexo.setBounds(10, 89, 38, 14);
 		painelConteudo.add(lblSexo);
 		
-		JComboBox cbbSexo = new JComboBox();
-		cbbSexo.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
-		cbbSexo.setBounds(129, 86, 38, 20);
-		painelConteudo.add(cbbSexo);
+		cbSexo = new JComboBox();
+		cbSexo.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
+		cbSexo.setBounds(129, 86, 38, 20);
+		painelConteudo.add(cbSexo);
 		
 		JPanel painelBotoes = new JPanel();
 		painelBotoes.setBounds(10, 362, 354, 66);
@@ -154,10 +187,10 @@ public class FrmContato extends JFrame {
 				Contato contato = new Contato();
 				contato.setNome(txtNome.getText());
 				contato.setEmail(txtEmail.getText());
-				contato.setSexo(cbbSexo.getSelectedItem().toString());
+				contato.setSexo(cbSexo.getSelectedItem().toString());
 				contato.setTelefone(txtTelefone.getText());
 				contato.setCelular(txtCelular.getText());
-				contato.setDtNasc(txtDataDeNascimento.getText());
+				contato.setDtNasc(txtDtNasc.getText());
 				contato.setEndereco(txtEndereco.getText());
 				
 				ContatoDAO contatoDao = new ContatoDAO();
@@ -165,8 +198,10 @@ public class FrmContato extends JFrame {
 				
 				if(lblOperacao.getText().equals("NOVO")){
 					contatoDao.gravar();
+					limparControles();
+				} else if (lblOperacao.getText().equals("EDITAR")) {
+					contatoDao.atualizar(txtId.getText());
 				}
-				limparControles();
 			}
 		});
 		btnSalvar.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/salvar32.png")));
@@ -186,7 +221,7 @@ public class FrmContato extends JFrame {
 		txtEmail.setText("");
 		txtTelefone.setText("");
 		txtCelular.setText("");
-		txtDataDeNascimento.setText("");
+		txtDtNasc.setText("");
 		txtEndereco.setText("");
 		txtNome.requestFocus();
 		
