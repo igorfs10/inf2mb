@@ -5,9 +5,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 
 import br.senai.sp.jandira.dao.ContatoDAO;
 import br.senai.sp.jandira.model.Contato;
@@ -20,7 +23,11 @@ import java.awt.Toolkit;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.ActionEvent;
+import javax.swing.JFormattedTextField;
 
 public class FrmContato extends JFrame {
 
@@ -30,7 +37,8 @@ public class FrmContato extends JFrame {
 	private JTextField txtEmail;
 	private JTextField txtTelefone;
 	private JTextField txtCelular;
-	private JTextField txtDtNasc;
+	private JFormattedTextField txtDtNasc;
+	//private JTextField txtDtNasc;
 	private JTextArea txtEndereco;
 	private JComboBox<?> cbSexo;
 	private JScrollPane scrollPane = new JScrollPane();
@@ -155,10 +163,6 @@ public class FrmContato extends JFrame {
 		lblDataDeNascimento.setBounds(10, 212, 115, 14);
 		painelConteudo.add(lblDataDeNascimento);
 		
-		txtDtNasc = new JTextField();
-		txtDtNasc.setBounds(129, 206, 215, 20);
-		painelConteudo.add(txtDtNasc);
-		txtDtNasc.setColumns(10);
 		scrollPane.setBounds(129, 231, 215, 45);
 		painelConteudo.add(scrollPane);
 		
@@ -176,6 +180,20 @@ public class FrmContato extends JFrame {
 		cbSexo.setBounds(129, 86, 38, 20);
 		painelConteudo.add(cbSexo);
 		
+		// *** Definir máscara da data ***
+		MaskFormatter dateMask = null;
+		
+		try {
+			dateMask = new MaskFormatter("##/##/####");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		txtDtNasc = new JFormattedTextField(dateMask);
+		txtDtNasc.setBounds(129, 206, 215, 20);
+		painelConteudo.add(txtDtNasc);
+		
 		JPanel painelBotoes = new JPanel();
 		painelBotoes.setBounds(10, 362, 354, 66);
 		painelPrincipal.add(painelBotoes);
@@ -184,13 +202,28 @@ public class FrmContato extends JFrame {
 		JButton btnSalvar = new JButton("");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				SimpleDateFormat toDate = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat toDataBase = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
+				
+				Date usuarioDate = null;
+				String dateBanco = null;
+				
+				try {
+					usuarioDate = toDate.parse((txtDtNasc.getText()));
+					dateBanco = toDataBase.format(usuarioDate);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				Contato contato = new Contato();
 				contato.setNome(txtNome.getText());
 				contato.setEmail(txtEmail.getText());
 				contato.setSexo(cbSexo.getSelectedItem().toString());
 				contato.setTelefone(txtTelefone.getText());
 				contato.setCelular(txtCelular.getText());
-				contato.setDtNasc(txtDtNasc.getText());
+				contato.setDtNasc(dateBanco);
 				contato.setEndereco(txtEndereco.getText());
 				
 				ContatoDAO contatoDao = new ContatoDAO();
@@ -200,16 +233,36 @@ public class FrmContato extends JFrame {
 					contatoDao.gravar();
 					limparControles();
 				} else if (lblOperacao.getText().equals("EDITAR")) {
-					contatoDao.atualizar(txtId.getText());
+					contato.setId(Integer.parseInt(txtId.getText()));
+					contatoDao.atualizar();
+					dispose();
+				} else if (lblOperacao.getText().equals("EXCLUIR")) {
+					contato.setId(Integer.parseInt(txtId.getText()));
+					int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir "
+							+ contato.getNome()
+							+ " ?" , "Atenção", JOptionPane.YES_NO_OPTION);
+					if(resposta == 0){
+						contatoDao.excluir();
+						dispose();
+					}
 				}
 			}
 		});
-		btnSalvar.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/salvar32.png")));
+		if (operacao.equals("EXCLUIR")) {
+			btnSalvar.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/excluir32.png")));
+		} else {
+			btnSalvar.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/salvar32.png")));
+		}
 		btnSalvar.setToolTipText("Salvar");
 		btnSalvar.setBounds(10, 11, 46, 44);
 		painelBotoes.add(btnSalvar);
 		
 		JButton btnSair = new JButton("");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnSair.setIcon(new ImageIcon(FrmContato.class.getResource("/br/senai/sp/jandira/imagens/sair32.png")));
 		btnSair.setToolTipText("Sair");
 		btnSair.setBounds(300, 11, 44, 44);

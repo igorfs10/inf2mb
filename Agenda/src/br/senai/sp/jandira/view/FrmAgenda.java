@@ -96,34 +96,8 @@ public class FrmAgenda extends JFrame {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				try {
-					int linha;
-					
-					linha = tabelaContatos.getSelectedRow();
-					
-					int id;
-					
-					id = (int) tabelaContatos.getValueAt(linha, 0);
-					
-					ContatoDAO contatoDao = new ContatoDAO();
-					Contato contato = contatoDao.getContato(id);
-									
-					FrmContato frmContato = new FrmContato("EDITAR");
-					frmContato.setTxtId(String.valueOf(contato.getId()));
-					frmContato.setTxtNome(contato.getNome());
-					frmContato.setTxtEmail(contato.getEmail());
-					frmContato.setTxtTelefone(contato.getTelefone());
-					frmContato.setTxtCelular(contato.getCelular());
-					frmContato.setTxtDtNasc(contato.getDtNasc());
-					frmContato.setTxtEndereco(contato.getEndereco());
-					frmContato.setCbSexo(contato.getSexo());
-					
-					frmContato.setVisible(true);
-					
-				} catch (Exception erro){
-					JOptionPane.showMessageDialog(null, "Por favor selecione um contato!", 
-							"Atenção", JOptionPane.WARNING_MESSAGE);
-				}
+				abrirJanelaContato("EDITAR");
+				
 			}
 		});
 		
@@ -136,8 +110,9 @@ public class FrmAgenda extends JFrame {
 		
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				FrmContato contato = new FrmContato("EXCLUIR");
-				contato.setVisible(true);
+				
+				abrirJanelaContato("EXCLUIR");
+				
 			}
 		});
 		
@@ -147,6 +122,11 @@ public class FrmAgenda extends JFrame {
 		painelBotoes.add(btnExcluir);
 		
 		JButton btnSair = new JButton("");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		btnSair.setToolTipText("Sair");
 		btnSair.setIcon(new ImageIcon(FrmAgenda.class.getResource("/br/senai/sp/jandira/imagens/sair32.png")));
 		btnSair.setBounds(360, 11, 44, 44);
@@ -191,5 +171,36 @@ public class FrmAgenda extends JFrame {
 		tabelaContatos.getColumnModel().getColumn(1).setPreferredWidth(143);
 		tabelaContatos.getColumnModel().getColumn(2).setPreferredWidth(151);
 		scrollTabela.setViewportView(tabelaContatos);
+	}
+	
+	private void abrirJanelaContato(String operacao){
+		try {
+			int linha;
+			
+			linha = tabelaContatos.getSelectedRow();
+			
+			int id;
+			
+			id = (int) tabelaContatos.getValueAt(linha, 0);
+			
+			ContatoDAO contatoDao = new ContatoDAO();
+			Contato contato = contatoDao.getContato(id);
+							
+			FrmContato frmContato = new FrmContato(operacao);
+			frmContato.setTxtId(String.valueOf(contato.getId()));
+			frmContato.setTxtNome(contato.getNome());
+			frmContato.setTxtEmail(contato.getEmail());
+			frmContato.setTxtTelefone(contato.getTelefone());
+			frmContato.setTxtCelular(contato.getCelular());
+			frmContato.setTxtDtNasc(contato.getDtNasc());
+			frmContato.setTxtEndereco(contato.getEndereco());
+			frmContato.setCbSexo(contato.getSexo());
+			
+			frmContato.setVisible(true);
+			
+		} catch (Exception erro){
+			JOptionPane.showMessageDialog(null, "Por favor selecione um contato!", 
+					"Atenção", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 }

@@ -47,7 +47,7 @@ public class ContatoDAO {
 
 	}
 	
-	public void atualizar(String id){
+	public void atualizar(){
 
 		String sql = "UPDATE contatos set"
 				+ " nome = ?, dtnasc = ?, email = ?, endereco = ?, telefone = ?, celular = ?, sexo = ?"
@@ -64,11 +64,11 @@ public class ContatoDAO {
 			stm.setString(5, contato.getTelefone());
 			stm.setString(6, contato.getCelular());
 			stm.setString(7, contato.getSexo());
-			stm.setString(8, id);
+			stm.setInt(8, contato.getId());
 			stm.execute();
 			
 			JOptionPane.showMessageDialog(null, "Contato atualizado com sucesso",
-					"Gravação",
+					"Atualização",
 					JOptionPane.INFORMATION_MESSAGE);
 			
 		} catch (SQLException e) {
@@ -77,7 +77,7 @@ public class ContatoDAO {
 
 	}
 	
-	public void excluir(int id){
+	public void excluir(){
 		
 		String sql = "DELETE FROM contatos"
 				+ " WHERE id = ?";
@@ -86,11 +86,11 @@ public class ContatoDAO {
 		
 		try {
 			stm = Conexao.abrirConexao().prepareStatement(sql);
-			stm.setString(1, String.valueOf(id));
+			stm.setInt(1, contato.getId());
 			stm.execute();
 			
-			JOptionPane.showMessageDialog(null, "Contato gravado com sucesso",
-					"Gravação",
+			JOptionPane.showMessageDialog(null, "Contato apagado com sucesso",
+					"Apagar",
 					JOptionPane.INFORMATION_MESSAGE);
 			
 		} catch (SQLException e) {
